@@ -1,0 +1,18 @@
+# project
+node_modules/
+dist/
+out/
+/sbom.json
+
+# ide
+.idea/
+.vscode/
+
+# secrets
+.env
+
+# personal
+/personal/
+
+# other
+.DS_Store
