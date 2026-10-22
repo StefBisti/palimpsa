@@ -20,4 +20,4 @@ Full spec, milestones and decisions: `personal/palimpsa.md` (gitignored, local o
 
 ## Progress
 
-Current milestone: 1 (sync works locally). Update this line as milestones complete.
+Current milestone: 2 (persistence). Update this line as milestones complete.

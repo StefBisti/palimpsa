@@ -7,7 +7,8 @@ export default function ConnectionComponent() {
   const [provider, setProvider] = useState<HocuspocusProvider | null>(null);
 
   useEffect(() => {
-    const p = new HocuspocusProvider({ url: COLLAB_URL, name: "demo" });
+    const id = "32c107dc-519f-443b-b0be-746594727bfb";
+    const p = new HocuspocusProvider({ url: COLLAB_URL, name: id });
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setProvider(p);
     return () => {
