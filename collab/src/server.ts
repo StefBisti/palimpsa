@@ -9,7 +9,7 @@ const server = new Server({
   debounce: 2000, // save 2s after the last change
   maxDebounce: 10000, // but at least every 10s while people keep typing
   extensions: [
-    new Logger(),
+    new Logger({ onRequest: false }),
     new Database({
       fetch: async ({ documentName }) => load(documentName),
       store: async ({ documentName, state }) => save(documentName, state),

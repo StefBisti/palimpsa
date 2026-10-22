@@ -24,9 +24,9 @@ services:
     deploy:
       resources:
         limits:
-          pids: 64
+          pids: 128
           cpus: "0.5"
-          memory: 64M
+          memory: 256M
 
   migrate:
     image: ghcr.io/stefbisti/palimpsa-migrate:${IMAGE_TAG:-dev}
@@ -46,7 +46,38 @@ services:
           pids: 64
           cpus: "0.5"
           memory: 64M
-      
+
+  collab:
+    image: ghcr.io/stefbisti/palimpsa-collab:${IMAGE_TAG:-dev}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      - PORT=1234
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:1234').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\""]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s
+    networks:
+      - edge
+      - backend
+    stop_grace_period: 30s
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    deploy:
+      resources:
+        limits:
+          pids: 128
+          cpus: "0.5"
+          memory: 256M
+
+
+
 volumes:
   pg_data:
 

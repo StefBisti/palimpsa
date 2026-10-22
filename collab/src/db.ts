@@ -18,7 +18,7 @@ export async function load(id: string): Promise<Uint8Array | null> {
 export async function save(id: string, doc: Uint8Array): Promise<void> {
   await db.query(
     `INSERT INTO notes (id, ydoc, updated_at) VALUES ($1, $2, now())
-    ON CONFLICT (id) DO UPDATE SET ydoc = EXCUDED.ydoc, updated_at = now()`,
+    ON CONFLICT (id) DO UPDATE SET ydoc = EXCLUDED.ydoc, updated_at = now()`,
     [id, doc],
   );
 }

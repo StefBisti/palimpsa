@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "node --env-file-if-exists=.env --watch src/server.ts",
+    "dev": "node --watch src/server.ts",
     "typecheck": "tsc --noEmit",
     "start": "node src/server.ts"
   },
