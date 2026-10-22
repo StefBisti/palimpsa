@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:?set POSTGRES_USER in .env}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      - POSTGRES_DB=${POSTGRES_DB:?set POSTGRES_DB in .env}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s
+    volumes:
+      - pg_data:/var/lib/postgresql
+    networks:
+      - backend
+    read_only: true
+    tmpfs: [/tmp, /var/run/postgresql]
+    cap_drop: [ALL]
+    cap_add: [CHOWN, SETUID, SETGID, FOWNER, DAC_READ_SEARCH]
+    security_opt: ["no-new-privileges:true"]
+    deploy:
+      resources:
+        limits:
+          pids: 64
+          cpus: "0.5"
+          memory: 64M
+
+  migrate:
+    image: ghcr.io/stefbisti/palimpsa-migrate:${IMAGE_TAG:-dev}
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
+    networks:
+      - backend
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    deploy:
+      resources:
+        limits:
+          pids: 64
+          cpus: "0.5"
+          memory: 64M
+      
+volumes:
+  pg_data:
+
+networks:
+  edge:
+  backend:
+    internal: true
