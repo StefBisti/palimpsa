@@ -6,5 +6,7 @@ CREATE TABLE note_members (
   PRIMARY KEY (note_id, user_id)
 );
 
+CREATE INDEX note_members_user_id_idx ON note_members (user_id);
+
 -- migrate:down
 DROP TABLE note_members;
