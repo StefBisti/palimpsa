@@ -37,7 +37,7 @@ const authRoutes: FastifyPluginAsync = async (app) => {
       return { id: rows[0]?.id };
     } catch (err) {
       if (err instanceof pg.DatabaseError && err.code === "23505") {
-        reply.code(409).send({ error: "email already registered" });
+        return reply.code(409).send({ error: "email already registered" });
       }
       throw err;
     }

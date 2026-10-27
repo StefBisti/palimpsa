@@ -4,8 +4,10 @@ import { db } from "./db.ts";
 import authRoutes from "./routes/auth.ts";
 import cookie from "@fastify/cookie";
 import z from "zod";
+import notesRoutes from "./routes/notes.ts";
 
 const app = Fastify({ logger: true });
+app.decorateRequest("userId", "");
 
 app.register(cookie);
 
@@ -23,6 +25,7 @@ app.register(
       return { ok: true };
     });
     api.register(authRoutes, { prefix: "/auth" });
+    api.register(notesRoutes, { prefix: "/notes" });
   },
   { prefix: "/api" },
 );
