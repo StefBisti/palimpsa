@@ -6,7 +6,10 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    proxy: { "/collab": { target: "ws://127.0.0.1:1234", ws: true } },
+    proxy: {
+      "/collab": { target: "ws://127.0.0.1:1234", ws: true },
+      "/api": "http://127.0.0.1:3000",
+    },
   },
   resolve: {
     alias: { "@": path.resolve(import.meta.dirname, "./src") },

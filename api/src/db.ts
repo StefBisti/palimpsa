@@ -1,11 +1,10 @@
 import pg from "pg";
 import { env } from "./env.ts";
-import retry from "./retry.ts";
 
 export const db = new pg.Pool({ connectionString: env.DATABASE_URL });
 db.on("error", (err) => console.error(err));
 
-await retry("postgres", () => db.query("SELECT 1"));
+await db.query("SELECT 1");
 
 export type Role = "owner" | "editor" | "viewer";
 

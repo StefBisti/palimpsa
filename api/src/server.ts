@@ -1,16 +1,26 @@
 import Fastify from "fastify";
 import { env } from "./env.ts";
+import { db } from "./db.ts";
 
 const app = Fastify({ logger: true });
 
-app.get("/health", async () => ({ ok: true }));
+app.register(
+  async (api) => {
+    api.get("/health", async () => {
+      await db.query("SELECT 1");
+      return { ok: true };
+    });
+  },
+  { prefix: "/api" },
+);
 
 await app.listen({ host: "0.0.0.0", port: env.PORT });
 
-for (const signal of ["SIGTERM", "SIGINT"]) {
-  process.once(signal, async () => {
-    setTimeout(() => process.exit(1), 5000).unref();
-    await app.close();
-    process.exit(0);
-  });
+async function shutdown() {
+  await app.close();
+  await db.end();
+  process.exit(0);
 }
+
+process.once("SIGTERM", shutdown);
+process.once("SIGINT", shutdown);
