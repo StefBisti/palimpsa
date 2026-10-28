@@ -23,6 +23,7 @@
     "@hocuspocus/extension-database": "^4.7.1",
     "@hocuspocus/extension-logger": "^4.7.1",
     "@hocuspocus/server": "^4.7.1",
+    "jose": "^6.2.13",
     "pg": "^8.23.1",
     "zod": "^4.6.7"
   },

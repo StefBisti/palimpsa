@@ -20,4 +20,4 @@ Full spec, milestones and decisions: `personal/palimpsa.md` (gitignored, local o
 
 ## Progress
 
-Current milestone: 3 (auth + sharing). Update this line as milestones complete.
+Current milestone: 4 (real frontend). Update this line as milestones complete.
