@@ -4,9 +4,10 @@ import cookie from "@fastify/cookie";
 import z from "zod";
 import notesRoutes from "./routes/notes.ts";
 import { db } from "./db.ts";
+import rateLimit from "@fastify/rate-limit";
 
 export function buildApp() {
-  const app = Fastify({ logger: true });
+  const app = Fastify({ logger: true, trustProxy: "uniquelocal" });
   app.decorateRequest("userId", "");
 
   app.register(cookie);
@@ -19,6 +20,8 @@ export function buildApp() {
     }
     throw err;
   });
+
+  app.register(rateLimit, { global: false });
 
   app.register(
     async (api) => {
