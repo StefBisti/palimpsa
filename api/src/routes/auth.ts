@@ -6,6 +6,7 @@ import type { CookieSerializeOptions } from "@fastify/cookie";
 import { db } from "../db.ts";
 import pg from "pg";
 import { signAccess, signRefresh, verifyRefresh } from "../tokens.ts";
+import { authHook } from "../auth-hook.ts";
 
 const Credentials = z.object({
   email: z.email(),
@@ -25,6 +26,17 @@ const cookieOpts: CookieSerializeOptions = {
 const noPassHash = await hash("under8"); // no password can be "under8" because it's under 8 chars
 
 const authRoutes: FastifyPluginAsync = async (app) => {
+  app.get("/me", { onRequest: authHook }, async (req, reply) => {
+    const { rows } = await db.query(
+      "SELECT id, email FROM users WHERE id = $1",
+      [req.userId],
+    );
+    if (!rows) {
+      return reply.code(401).send({ error: "unauthorized" });
+    }
+    return rows[0];
+  });
+
   app.post("/register", async (req, reply) => {
     const { email, password } = Credentials.parse(req.body);
     const passwordHash = await hash(password);
