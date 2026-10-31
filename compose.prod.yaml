@@ -1,0 +1,8 @@
+services:
+  api:
+    restart: unless-stopped
+    environment:
+      - COOKIE_SECURE=true
+    deploy:
+        resources:
+          limits: { pids: 128, cpus: "0.5", memory: 256M }

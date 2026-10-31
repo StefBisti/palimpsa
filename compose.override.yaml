@@ -10,5 +10,14 @@ services:
   api:
     build:
       context: ./api
+      target: dev
     ports:
       - 127.0.0.1:3000:3000
+    read_only: false
+    develop:
+      watch:
+        - path: ./api/src
+          action: sync
+          target: /app/src
+        - path: ./api/package-lock.json
+          action: rebuild

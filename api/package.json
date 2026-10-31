@@ -2,10 +2,12 @@
   "name": "api",
   "private": true,
   "version": "1.0.0",
+  "engines": {"node": ">=26"},
   "scripts": {
     "dev": "node --watch src/server.ts",
-    "typecheck": "tsc --noEmit",
-    "start": "node src/server.ts"
+    "typecheck": "tsc",
+    "build": "tsc --noEmit false",
+    "test": "node --env-file=./.env.test --test \"./src/**/*.test.ts\""
   },
   "repository": {
     "type": "git",
