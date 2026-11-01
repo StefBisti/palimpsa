@@ -21,3 +21,22 @@ services:
           target: /app/src
         - path: ./api/package-lock.json
           action: rebuild
+
+  db-test:
+    image: postgres:18-alpine
+    profiles: [test]
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=test
+    tmpfs: [/var/lib/postgresql]
+    ports:
+      - 127.0.0.1:5432:5432
+    networks: [backend, edge]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s

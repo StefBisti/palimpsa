@@ -6,8 +6,8 @@ import notesRoutes from "./routes/notes.ts";
 import { db } from "./db.ts";
 import rateLimit from "@fastify/rate-limit";
 
-export function buildApp() {
-  const app = Fastify({ logger: true, trustProxy: "uniquelocal" });
+export function buildApp({ logger = true } = {}) {
+  const app = Fastify({ logger, trustProxy: "uniquelocal" });
   app.decorateRequest("userId", "");
 
   app.register(cookie);

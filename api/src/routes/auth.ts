@@ -26,16 +26,6 @@ const cookieOpts: CookieSerializeOptions = {
 const noPassHash = await hash("under8"); // no password can be "under8" because it's under 8 chars
 
 const authRoutes: FastifyPluginAsync = async (app) => {
-  app.get("/me", { onRequest: authHook }, async (req, reply) => {
-    const { rows } = await db.query<{ id: string; email: string }>(
-      "SELECT id, email FROM users WHERE id = $1",
-      [req.userId],
-    );
-    const user = rows[0];
-    if (!user) return reply.code(401).send({ error: "unauthorized" });
-    return user;
-  });
-
   app.post(
     "/register",
     { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } },
@@ -93,6 +83,16 @@ const authRoutes: FastifyPluginAsync = async (app) => {
   app.post("/logout", async (_req, reply) => {
     reply.clearCookie(REFRESH_COOKIE, { path: "/api/auth" });
     return reply.code(204).send();
+  });
+
+  app.get("/me", { onRequest: authHook }, async (req, reply) => {
+    const { rows } = await db.query<{ id: string; email: string }>(
+      "SELECT id, email FROM users WHERE id = $1",
+      [req.userId],
+    );
+    const user = rows[0];
+    if (!user) return reply.code(401).send({ error: "unauthorized" });
+    return user;
   });
 };
 
