@@ -6,6 +6,7 @@ import type { CookieSerializeOptions } from "@fastify/cookie";
 import { db } from "../db.ts";
 import pg from "pg";
 import { signAccess, signRefresh, verifyRefresh } from "../tokens.ts";
+import { authHook } from "../auth-hook.ts";
 
 const Credentials = z.object({
   email: z.email(),
@@ -25,38 +26,46 @@ const cookieOpts: CookieSerializeOptions = {
 const noPassHash = await hash("under8"); // no password can be "under8" because it's under 8 chars
 
 const authRoutes: FastifyPluginAsync = async (app) => {
-  app.post("/register", async (req, reply) => {
-    const { email, password } = Credentials.parse(req.body);
-    const passwordHash = await hash(password);
-    try {
-      const { rows } = await db.query<{ id: string }>(
-        "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id",
-        [email.toLowerCase(), passwordHash],
-      );
-      reply.code(201);
-      return { id: rows[0]?.id };
-    } catch (err) {
-      if (err instanceof pg.DatabaseError && err.code === "23505") {
-        return reply.code(409).send({ error: "email already registered" });
+  app.post(
+    "/register",
+    { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } },
+    async (req, reply) => {
+      const { email, password } = Credentials.parse(req.body);
+      const passwordHash = await hash(password);
+      try {
+        const { rows } = await db.query<{ id: string }>(
+          "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id",
+          [email.toLowerCase(), passwordHash],
+        );
+        reply.code(201);
+        return { id: rows[0]?.id };
+      } catch (err) {
+        if (err instanceof pg.DatabaseError && err.code === "23505") {
+          return reply.code(409).send({ error: "email already registered" });
+        }
+        throw err;
       }
-      throw err;
-    }
-  });
+    },
+  );
 
-  app.post("/login", async (req, reply) => {
-    const { email, password } = Credentials.parse(req.body);
-    const { rows } = await db.query<{ id: string; password_hash: string }>(
-      "SELECT id, password_hash FROM users WHERE email = $1",
-      [email.toLowerCase()],
-    );
-    const user = rows[0]; // undefined if it doesn't exist
-    const ok = await verify(user?.password_hash ?? noPassHash, password); // always runs, user undefined or not
-    if (!user || !ok) {
-      return reply.code(401).send({ error: "invalid email or password" });
-    }
-    reply.setCookie(REFRESH_COOKIE, await signRefresh(user.id), cookieOpts);
-    return { accessToken: await signAccess(user.id) };
-  });
+  app.post(
+    "/login",
+    { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } },
+    async (req, reply) => {
+      const { email, password } = Credentials.parse(req.body);
+      const { rows } = await db.query<{ id: string; password_hash: string }>(
+        "SELECT id, password_hash FROM users WHERE email = $1",
+        [email.toLowerCase()],
+      );
+      const user = rows[0]; // undefined if it doesn't exist
+      const ok = await verify(user?.password_hash ?? noPassHash, password); // always runs, user undefined or not
+      if (!user || !ok) {
+        return reply.code(401).send({ error: "invalid email or password" });
+      }
+      reply.setCookie(REFRESH_COOKIE, await signRefresh(user.id), cookieOpts);
+      return { accessToken: await signAccess(user.id) };
+    },
+  );
 
   app.post("/refresh", async (req, reply) => {
     const token = req.cookies[REFRESH_COOKIE];
@@ -74,6 +83,16 @@ const authRoutes: FastifyPluginAsync = async (app) => {
   app.post("/logout", async (_req, reply) => {
     reply.clearCookie(REFRESH_COOKIE, { path: "/api/auth" });
     return reply.code(204).send();
+  });
+
+  app.get("/me", { onRequest: authHook }, async (req, reply) => {
+    const { rows } = await db.query<{ id: string; email: string }>(
+      "SELECT id, email FROM users WHERE id = $1",
+      [req.userId],
+    );
+    const user = rows[0];
+    if (!user) return reply.code(401).send({ error: "unauthorized" });
+    return user;
   });
 };
 
