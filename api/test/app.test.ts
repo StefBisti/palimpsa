@@ -28,7 +28,7 @@ const hit = (url: string, remoteAddress: string, forwardedFor?: string) =>
 for (const [url, ip] of [
   ["/api/auth/login", "203.0.113.1"],
   ["/api/auth/register", "203.0.113.2"],
-]) {
+] as const) {
   test(`${url} is limited to 5 requests per minute per IP`, async () => {
     for (let i = 0; i < 5; i++) {
       assert.equal((await hit(url, ip)).statusCode, 400);
