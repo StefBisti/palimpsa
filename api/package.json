@@ -8,9 +8,8 @@
   "scripts": {
     "dev": "node --watch src/server.ts",
     "typecheck": "tsc",
-    "build": "tsc --noEmit false",
-    "test": "node --env-file=./.env.test --test \"test/**/*.test.ts\"",
     "test:db": "docker compose --profile test up -d --wait db-test && docker compose run --rm --no-deps -e DATABASE_URL=postgres://test:test@db-test:5432/test?sslmode=disable migrate",
+    "test": "node --env-file=./.env.test --test \"test/**/*.test.ts\"",
     "test:db:down": "docker compose --profile test rm -sf db-test"
   },
   "repository": {
