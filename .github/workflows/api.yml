@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch: 
 
 permissions: {}
 
@@ -27,9 +28,11 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
-      - id: diff  
+      - id: diff
+        env:
+          EVENT: ${{ github.event_name }}
         run: |
-          if git diff --quiet HEAD^1 HEAD -- api db/migrations .github/workflows/api.yml; then
+          if [ "$EVENT" != "workflow_dispatch" ] && git diff --quiet HEAD^1 HEAD -- api db/migrations .github/workflows/api.yml; then
             echo "api=false" >> "$GITHUB_OUTPUT"
           else
             echo "api=true" >> "$GITHUB_OUTPUT"
@@ -110,7 +113,7 @@ jobs:
           
   publish:
     name: api-publish
-    if: github.event_name == 'push'
+    if: github.event_name != 'pull_request'
     needs: scan
     runs-on: ubuntu-24.04
     permissions:
