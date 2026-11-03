@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "node --watch src/server.ts",
     "typecheck": "tsc",
+    "lint": "oxlint --type-aware --deny-warnings",
     "test:db": "docker compose --profile test up -d --wait db-test && docker compose run --rm --no-deps -e DATABASE_URL=postgres://test:test@db-test:5432/test?sslmode=disable migrate",
     "test": "node --env-file=./.env.test --test \"test/**/*.test.ts\"",
     "test:db:down": "docker compose --profile test rm -sf db-test"
@@ -36,6 +37,8 @@
   "devDependencies": {
     "@types/node": "^26.6.5",
     "@types/pg": "^8.23.1",
+    "oxlint": "^1.90.0",
+    "oxlint-tsgolint": "^7.0.2005",
     "typescript": "^7.0.2"
   }
 }
