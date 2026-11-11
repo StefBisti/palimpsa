@@ -5,6 +5,8 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // the editor chunk (Tiptap + Yjs) is ~700 kB but only loads when a note is opened
+  build: { chunkSizeWarningLimit: 800 },
   server: {
     proxy: {
       "/collab": { target: "ws://127.0.0.1:1234", ws: true },

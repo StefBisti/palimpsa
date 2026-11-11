@@ -130,3 +130,54 @@
     @apply font-sans;
   }
 }
+
+/* live carets of other users (@tiptap/extension-collaboration-caret) */
+.collaboration-carets__caret {
+  position: relative;
+  margin: 0 -1px;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  word-break: normal;
+  pointer-events: none;
+}
+
+.collaboration-carets__label {
+  position: absolute;
+  top: -1.4em;
+  left: -1px;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px 3px 3px 0;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: normal;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* checklists (@tiptap/extension-list) */
+.tiptap ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tiptap ul[data-type="taskList"] li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+/* as tall as one line of text, so the checkbox sits centered on the first line */
+.tiptap ul[data-type="taskList"] li > label {
+  display: flex;
+  align-items: center;
+  height: 1.75em;
+}
+
+.tiptap ul[data-type="taskList"] li > div {
+  flex: 1;
+}
+
+.tiptap ul[data-type="taskList"] li > div > p {
+  margin: 0;
+}
