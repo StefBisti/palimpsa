@@ -4,8 +4,11 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "node --watch src/server.ts",
-    "typecheck": "tsc --noEmit",
-    "start": "node src/server.ts"
+    "typecheck": "tsc",
+    "lint": "oxlint --type-aware --deny-warnings",
+    "test:db": "docker compose --profile test up -d --wait db-test && docker compose run --rm --no-deps -e DATABASE_URL=postgres://test:test@db-test:5432/test?sslmode=disable migrate",
+    "test": "node --env-file=./.env.test --test \"test/**/*.test.ts\"",
+    "test:db:down": "docker compose --profile test rm -sf db-test"
   },
   "repository": {
     "type": "git",
@@ -22,14 +25,18 @@
   "dependencies": {
     "@hocuspocus/extension-database": "^4.8.0",
     "@hocuspocus/extension-logger": "^4.8.0",
-    "@hocuspocus/server": "^4.7.1",
+    "@hocuspocus/server": "^4.8.0",
     "jose": "^6.2.15",
     "pg": "^8.23.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@hocuspocus/provider": "^4.8.0",
     "@types/node": "^26.6.6",
     "@types/pg": "^8.23.1",
-    "typescript": "^7.0.2"
+    "oxlint": "^1.93.0",
+    "oxlint-tsgolint": "^7.0.2006",
+    "typescript": "^7.0.2",
+    "yjs": "^13.6.33"
   }
 }

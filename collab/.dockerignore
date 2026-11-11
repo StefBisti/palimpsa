@@ -1,6 +1,4 @@
-node_modules/
-dist/
-out/
-
-.env
-.env.*
+node_modules
+test
+.env*
+*.md
