@@ -70,12 +70,6 @@ services:
     read_only: true
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
-    deploy:
-      resources:
-        limits:
-          pids: 128
-          cpus: "0.5"
-          memory: 256M
 
   api:
     image: ghcr.io/stefbisti/palimpsa-api:${IMAGE_TAG:-dev}
