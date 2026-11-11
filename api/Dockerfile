@@ -3,6 +3,7 @@
 
 FROM node:26-trixie-slim@sha256:e4db4c914bf8ad241bd24804fc25d272d89bad97e68cdc8a1414862790a02c39 AS base
 WORKDIR /app
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* 
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev
 
