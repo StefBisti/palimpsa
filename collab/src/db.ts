@@ -2,7 +2,7 @@ import pg from "pg";
 import { env } from "./env.ts";
 
 export const db = new pg.Pool({ connectionString: env.DATABASE_URL });
-db.on("error", (err, _) => console.error(err));
+db.on("error", (err) => console.error(err));
 
 await db.query("SELECT 1");
 
