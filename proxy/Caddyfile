@@ -1,0 +1,27 @@
+{
+	admin off
+	# plain http for now
+	auto_https off
+}
+
+:8080 {
+	encode zstd gzip
+
+	# for the container healthcheck
+	handle /healthz {
+		respond "ok" 200
+	}
+
+	handle /api/* {
+		reverse_proxy api:3000
+	}
+
+	# websockets are upgraded automatically
+	handle /collab* {
+		reverse_proxy collab:1234
+	}
+
+	handle {
+		reverse_proxy web:8080
+	}
+}
