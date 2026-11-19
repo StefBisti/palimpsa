@@ -1,4 +1,13 @@
 services:
+  db:
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits: { pids: 128, cpus: "0.5", memory: 256M }
+  migrate:
+    deploy:
+      resources:
+        limits: { pids: 64, cpus: "0.5", memory: 64M }
   api:
     restart: unless-stopped
     environment:
@@ -11,7 +20,6 @@ services:
     deploy:
         resources:
           limits: { pids: 128, cpus: "0.5", memory: 256M }
-
   web:
     restart: unless-stopped
     deploy:

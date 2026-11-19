@@ -1,0 +1,4 @@
+# golang.org/x/net/html DoS, inside the dbmate 2.38.1 
+# binary. fixed on dbmate main, not released yet.
+# doesn't apply: dbmate never parses HTML.
+CVE-2026-78661 exp:2026-12-17

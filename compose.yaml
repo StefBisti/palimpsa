@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:18-alpine
+    image: postgres:18-alpine@sha256:ff64c9e3bdf8e2120107d3559de8db314e8305f7e38c5105903c6295876738ff
     environment:
       - POSTGRES_USER=${POSTGRES_USER:?set POSTGRES_USER in .env}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
@@ -21,12 +21,6 @@ services:
     cap_drop: [ALL]
     cap_add: [CHOWN, SETUID, SETGID, FOWNER, DAC_READ_SEARCH]
     security_opt: ["no-new-privileges:true"]
-    deploy:
-      resources:
-        limits:
-          pids: 128
-          cpus: "0.5"
-          memory: 256M
 
   migrate:
     image: ghcr.io/stefbisti/palimpsa-migrate:${IMAGE_TAG:-dev}
@@ -40,12 +34,6 @@ services:
     read_only: true
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
-    deploy:
-      resources:
-        limits:
-          pids: 64
-          cpus: "0.5"
-          memory: 64M
 
   collab:
     image: ghcr.io/stefbisti/palimpsa-collab:${IMAGE_TAG:-dev}
