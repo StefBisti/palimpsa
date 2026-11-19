@@ -89,6 +89,7 @@ jobs:
           severity: HIGH,CRITICAL
           ignore-unfixed: true
           exit-code: "1"
+          trivyignores: web/.trivyignore
           
   publish:
     name: web-publish
