@@ -100,8 +100,32 @@ services:
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
 
+  proxy:
+    image: ghcr.io/stefbisti/palimpsa-proxy:${IMAGE_TAG:-dev}
+    depends_on:
+      web: { condition: service_healthy }
+      api: { condition: service_healthy }
+      collab: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s
+    volumes:
+      - caddy_data:/data
+    networks:
+      - edge
+    read_only: true
+    tmpfs: [/config]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+
+
 volumes:
   pg_data:
+  caddy_data:
 
 networks:
   edge:

@@ -9,7 +9,7 @@ updates:
         update-types: [minor, patch]
 
   - package-ecosystem: docker
-    directories: ["/api", "/collab", "/db", "/web"]
+    directories: ["/api", "/collab", "/db", "/web", "/proxy"]
     schedule: { interval: weekly }
     cooldown: { default-days: 3 }
 
