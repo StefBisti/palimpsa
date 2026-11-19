@@ -31,6 +31,12 @@ services:
         - path: ./api/package-lock.json
           action: rebuild
 
+  web:
+    build:
+      context: ./web
+    ports:
+      - 127.0.0.1:8080:8080
+
   db-test:
     image: postgres:18-alpine
     profiles: [test]

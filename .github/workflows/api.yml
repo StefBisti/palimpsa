@@ -153,5 +153,4 @@ jobs:
       - run: cosign sign --yes "${IMAGE}@${DIGEST}"
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
-
             

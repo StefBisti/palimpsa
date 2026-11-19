@@ -96,6 +96,22 @@ services:
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
 
+  web:
+    image: ghcr.io/stefbisti/palimpsa-web:${IMAGE_TAG:-dev}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s
+    networks:
+      - edge
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+
 volumes:
   pg_data:
 
