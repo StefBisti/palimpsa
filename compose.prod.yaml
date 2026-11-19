@@ -6,3 +6,15 @@ services:
     deploy:
         resources:
           limits: { pids: 128, cpus: "0.5", memory: 256M }
+  collab:
+    restart: unless-stopped
+    deploy:
+        resources:
+          limits: { pids: 128, cpus: "0.5", memory: 256M }
+
+  web:
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits: {pids: 64, cpus: "0.25", memory: 64M }
+

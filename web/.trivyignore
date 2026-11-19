@@ -1,0 +1,9 @@
+# nginx 1.30.6 in nginxinc/nginx-unprivileged:stable-alpine. fixed in 1.30.7, no image with it yet.
+# none apply: our nginx.conf has no http2, quic, mail, ssl or resolver.
+# expires so the scan fails again if the base image hasn't been bumped by then.
+CVE-2026-121810 exp:2026-12-03
+CVE-2026-123007 exp:2026-12-03
+CVE-2026-123633 exp:2026-12-03
+CVE-2026-113425 exp:2026-12-03
+CVE-2026-118899 exp:2026-12-03
+CVE-2026-123634 exp:2026-12-03

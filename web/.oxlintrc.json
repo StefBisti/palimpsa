@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "eqeqeq": "error",
+    "typescript/no-floating-promises": "error",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "error",
+    "react/only-export-components": ["error", { "allowConstantExport": true }]
+  },
+  "overrides": [
+    { "files": ["src/components/ui/**"], "rules": { "react/only-export-components": "off" } }
+  ]
+}
