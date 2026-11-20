@@ -20,4 +20,4 @@ Full spec, milestones and decisions: `personal/palimpsa.md` (gitignored, local o
 
 ## Progress
 
-Current milestone: 4 (services one by one, see spec). Done: api, collab, web. Next: db/migrate, then proxy, then e2e. Update this line as services and milestones complete.
+Current milestone: 5 (repo-wide ci: gitleaks, Semgrep). Milestones 1-4 done: all services (api, collab, web, db/migrate, proxy) plus e2e. Update this line as services and milestones complete.
