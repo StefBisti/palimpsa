@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # check=error=true
-FROM ghcr.io/amacneil/dbmate:2@sha256:b0c8a87bfef4f2819fdb0a68ca357a44d12fb90d23eca695fcfc3b7e159cb1c5
+FROM ghcr.io/amacneil/dbmate:2@sha256:fb4fe7cabfe98cf864d63ce083867f3c303a8c1a022fcd69081439425706e909
 RUN apk upgrade --no-cache
 WORKDIR /app
 COPY ./migrations/ ./db/migrations
