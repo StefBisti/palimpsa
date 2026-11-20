@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directories: ["/api", "/collab", "/web"]
+    directories: ["/api", "/collab", "/web", "/e2e"]
     schedule: { interval: weekly }
     cooldown: { default-days: 3 }
     groups:
