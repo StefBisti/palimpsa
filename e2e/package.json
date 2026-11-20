@@ -1,0 +1,26 @@
+{
+  "name": "e2e",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "test": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StefBisti/palimpsa.git"
+  },
+  "keywords": [],
+  "author": "Stefan Bisti",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/StefBisti/palimpsa/issues"
+  },
+  "homepage": "https://github.com/StefBisti/palimpsa#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
+  }
+}
