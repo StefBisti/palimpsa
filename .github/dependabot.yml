@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: npm
     directories: ["/api", "/collab", "/web", "/e2e"]
     schedule: { interval: weekly }
-    cooldown: { default-days: 3 }
+    cooldown: { default-days: 7 }
     groups:
       minor-and-patch:
         update-types: [minor, patch]
@@ -11,14 +11,14 @@ updates:
   - package-ecosystem: docker
     directories: ["/api", "/collab", "/db", "/web", "/proxy"]
     schedule: { interval: weekly }
-    cooldown: { default-days: 3 }
+    cooldown: { default-days: 7 }
 
   - package-ecosystem: docker-compose
     directory: "/"
     schedule: { interval: weekly }
-    cooldown: { default-days: 3 }
+    cooldown: { default-days: 7 }
 
   - package-ecosystem: github-actions
     directory: "/"
     schedule: { interval: weekly }
-    cooldown: { default-days: 3 }
+    cooldown: { default-days: 7 }
